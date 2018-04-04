@@ -9,8 +9,12 @@
   "author": "mjaulin",
   "license": "MIT",
   "dependencies": {
+    "classnames": "^2.2.5",
     "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react-dom": "^16.3.0",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
+    "redux-actions": "^2.3.0"
   },
   "devDependencies": {
     "@types/react": "^16.3.2",
