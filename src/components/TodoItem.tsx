@@ -57,7 +57,7 @@ class TodoItem extends React.Component<TodoItemProps, TodoItemState> {
 
         return (
             <li className={classNames({
-                completed: this.props.todo.completed,
+                // completed: this.props.todo.completed,
                 editing: this.state.editing
             })}>
                 {element}
