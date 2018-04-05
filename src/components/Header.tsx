@@ -3,7 +3,7 @@ import TodoTextInput from './TodoTextInput';
 
 interface HeaderProps {
     addTodo: (text: string) => any;
-};
+}
 
 class Header extends React.Component<HeaderProps> {
 

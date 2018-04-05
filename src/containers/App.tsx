@@ -22,7 +22,7 @@ interface AppProps {
 class App extends React.Component<AppProps> {
 
     componentDidMount() {
-        this.props.dispatch(fetchData(this.props.dispatch, 'http://599167402df2f40011e4929a.mockapi.io/items'));
+        this.props.dispatch(fetchData(this.props.dispatch));
     }
 
     render() {
@@ -38,11 +38,11 @@ class App extends React.Component<AppProps> {
 
         return (
             <div className="todoapp">
-                <Header addTodo={(text: string) => dispatch(addTodo(text))} />
+                <Header addTodo={(text: string) => dispatch(addTodo(dispatch, text))} />
                 <MainSection
                     todos={todos}
                     editTodo={(t, s) => dispatch(editTodo(t, s))}
-                    deleteTodo={(t) => dispatch(deleteTodo(t))}
+                    deleteTodo={(t) => dispatch(deleteTodo(dispatch, t))}
                     completeTodo={(t) => dispatch(completeTodo(t))} />
             </div>
         );

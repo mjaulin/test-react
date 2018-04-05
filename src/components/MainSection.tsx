@@ -29,8 +29,4 @@ class MainSection extends React.Component<MainSectionProps> {
     }
 }
 
-const mapStateToProps = state => ({
-    todos: state.todos
-});
-
 export default MainSection

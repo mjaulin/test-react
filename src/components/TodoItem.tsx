@@ -3,6 +3,7 @@ import * as classNames from 'classnames';
 
 import { Todo } from '../models';
 import TodoTextInput from './TodoTextInput';
+import {Dispatch} from "redux";
 
 interface TodoItemProps {
     todo: Todo;
@@ -13,7 +14,7 @@ interface TodoItemProps {
 }
 interface TodoItemState {
     editing: boolean;
-};
+}
 
 class TodoItem extends React.Component<TodoItemProps, TodoItemState> {
     constructor(props, context) {
@@ -50,7 +51,7 @@ class TodoItem extends React.Component<TodoItemProps, TodoItemState> {
                 <div>
                     {this.props.todo.label}
                     <span className="edit" />
-                    <span className="destroy" onClick={() => this.props.deleteTodo(this.props.todo)}>x</span>
+                    <button className="destroy" onClick={() => this.props.deleteTodo(this.props.todo)}>x</button>
                 </div>
             );
         }
