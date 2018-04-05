@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
-import { Todo } from '../models/todo';
+import { Todo } from '../models';
 import Header from '../components/Header';
 import MainSection from '../components/MainSection';
 import {
@@ -10,11 +10,11 @@ import {
     completeTodo,
     deleteTodo,
     fetchData
-} from '../actions/todo';
+} from '../actions';
 
 interface AppProps {
     todos: Todo[];
-    hasErrored: false;
+    hasError: false;
     isLoading: true;
     dispatch: Dispatch<{}>;
 }
@@ -22,13 +22,13 @@ interface AppProps {
 class App extends React.Component<AppProps> {
 
     componentDidMount() {
-        this.props.dispatch(fetchData('http://599167402df2f40011e4929a.mockapi.io/items'));
+        this.props.dispatch(fetchData(this.props.dispatch, 'http://599167402df2f40011e4929a.mockapi.io/items'));
     }
 
     render() {
-        const { todos, hasErrored, isLoading, dispatch } = this.props;
+        const { todos, hasError, isLoading, dispatch } = this.props;
 
-        if (hasErrored) {
+        if (hasError) {
             return <span>Sorry it doesn't work !!!</span>;
         }
 
@@ -50,9 +50,9 @@ class App extends React.Component<AppProps> {
 }
 
 const mapStateToProps = state => ({
-    todos: state.todos,
-    hasErrored: state.hasErrored,
-    isLoading: state.isLoading
+    todos: state.todos.todos,
+    hasError: state.todos.hasError,
+    isLoading: state.todos.isLoading
 });
 
 export default connect(mapStateToProps)(App);
