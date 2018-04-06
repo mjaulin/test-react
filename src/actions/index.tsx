@@ -1,70 +1,57 @@
 import { createAction } from 'redux-actions';
-import { Dispatch } from 'redux';
 import { Todo } from '../models';
 import {API} from "../api";
 import {
     ADD_TODO,
-    ADD_TODO_SUCCESS,
     DELETE_TODO,
-    DELETE_TODO_SUCCESS,
-    EDIT_TODO,
-    COMPLETE_TODO,
     FETCH_DATA_TODO,
-    FETCH_DATA_SUCCESS_TODO,
     ITEM_LOADED_TODO,
-    ITEM_ERROR_TODO
+    ITEM_ERROR_TODO, EDIT_TODO
 } from '../constants';
 
-const addTodo = createAction<void, Dispatch<{}>, string>(
-    ADD_TODO,
-    (dispatch, text: string) => {
-        let todo: Todo = { label: text, completed: false };
-        API.create(todo)
-            .then((id: number) => {
-                todo.id = id;
-                dispatch(addTodoSuccess(todo))
-            });
-    }
-);
+const fetchData = (dispatch) => {
+    dispatch(itemsLoaded(false));
+    API.getAll()
+        .then(items => dispatch(fetchDataSuccess(items)))
+        .then(() => dispatch(itemsLoaded(true)))
+        .catch(() => dispatch(itemsHasError(true)))
+};
+
+const addTodo = (dispatch, text: string) => {
+    let newTodo = { label: text, completed: false };
+    API.create(newTodo)
+        .then((id: number) => dispatch(addTodoSuccess({ ...newTodo, id: id })));
+};
 
 const addTodoSuccess = createAction<Todo, Todo>(
-    ADD_TODO_SUCCESS,
+    ADD_TODO,
     (todo: Todo) => todo
 );
 
-const deleteTodo = createAction<void, Dispatch<{}>, Todo>(
-    DELETE_TODO,
-    (dispatch, todo) => API.delete(todo.id).then(() => dispatch(deleteTodoSuccess(todo.id)))
-);
+const deleteTodo = (dispatch, todo) => API.delete(todo.id).then(() => dispatch(deleteTodoSuccess(todo.id)));
 
 const deleteTodoSuccess = createAction<number, number>(
-    DELETE_TODO_SUCCESS,
+    DELETE_TODO,
     (id) => id
 );
 
-const editTodo = createAction<Todo, Todo, string>(
+const editTodo = (dispatch, todo, newLabel) => {
+    let updatedTodo = { ...todo, text: newLabel };
+    API.update(updatedTodo).then(() => dispatch(editTodoSuccess(updatedTodo)))
+};
+
+const completeTodo = (dispatch, todo, completed) => {
+    let updatedTodo = { ...todo, completed: completed };
+    API.update(updatedTodo).then(() => dispatch(editTodoSuccess(updatedTodo)))
+};
+
+const editTodoSuccess = createAction<Todo, Todo, string>(
     EDIT_TODO,
-    (todo, newLabel) => ({ ...todo, text: newLabel })
-);
-
-const completeTodo = createAction<Todo, Todo>(
-    COMPLETE_TODO,
-    (todo: Todo) => todo
-);
-
-const fetchData = createAction<void, Dispatch<{}>>(
-    FETCH_DATA_TODO,
-    (dispatch) => {
-        dispatch(itemsLoaded(false));
-        API.getAll()
-            .then(items => dispatch(fetchDataSuccess(items)))
-            .then(() => dispatch(itemsLoaded(true)))
-            .catch(() => dispatch(itemsHasError(true)))
-    }
+    (todo) => todo
 );
 
 const fetchDataSuccess = createAction<Todo[], Todo[]>(
-    FETCH_DATA_SUCCESS_TODO,
+    FETCH_DATA_TODO,
     (items: Todo[]) => items
 );
 
@@ -79,9 +66,9 @@ const itemsHasError = createAction<boolean>(
 );
 
 export {
+    fetchData,
     addTodo,
     deleteTodo,
     editTodo,
-    completeTodo,
-    fetchData
+    completeTodo
 }

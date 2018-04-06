@@ -5,11 +5,11 @@ import { Todo } from '../models';
 import Header from '../components/Header';
 import MainSection from '../components/MainSection';
 import {
+    fetchData,
     addTodo,
     editTodo,
-    completeTodo,
     deleteTodo,
-    fetchData
+    completeTodo
 } from '../actions';
 
 interface AppProps {
@@ -22,7 +22,7 @@ interface AppProps {
 class App extends React.Component<AppProps> {
 
     componentDidMount() {
-        this.props.dispatch(fetchData(this.props.dispatch));
+        fetchData(this.props.dispatch);
     }
 
     render() {
@@ -38,12 +38,12 @@ class App extends React.Component<AppProps> {
 
         return (
             <div className="todoapp">
-                <Header addTodo={(text: string) => dispatch(addTodo(dispatch, text))} />
+                <Header addTodo={(text: string) => addTodo(dispatch, text)} />
                 <MainSection
                     todos={todos}
-                    editTodo={(t, s) => dispatch(editTodo(t, s))}
-                    deleteTodo={(t) => dispatch(deleteTodo(dispatch, t))}
-                    completeTodo={(t) => dispatch(completeTodo(t))} />
+                    editTodo={(t, s) => editTodo(dispatch, t, s)}
+                    deleteTodo={(t) => deleteTodo(dispatch, t)}
+                    completeTodo={(t, c) => completeTodo(dispatch, t, c)} />
             </div>
         );
     }

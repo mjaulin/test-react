@@ -5,9 +5,9 @@ import { connect } from 'react-redux'
 
 interface MainSectionProps {
     todos: Todo[];
-    editTodo: (todo:Todo, text:string) => void;
+    editTodo: (todo:Todo, text: string) => void;
     deleteTodo: (todo:Todo) => void;
-    completeTodo: (todo:Todo) => void;
+    completeTodo: (todo:Todo, completed: boolean) => void;
 }
 
 class MainSection extends React.Component<MainSectionProps> {

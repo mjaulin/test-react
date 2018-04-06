@@ -9,7 +9,7 @@ interface TodoItemProps {
     todo: Todo;
     editTodo: (todo: Todo, text: string) => void;
     deleteTodo: (todo: Todo) => void;
-    completeTodo: (todo: Todo) => void;
+    completeTodo: (todo: Todo, t: boolean) => void;
     key?: any;
 }
 interface TodoItemState {
@@ -58,7 +58,7 @@ class TodoItem extends React.Component<TodoItemProps, TodoItemState> {
 
         return (
             <li className={classNames({
-                // completed: this.props.todo.completed,
+                completed: this.props.todo.completed,
                 editing: this.state.editing
             })}>
                 {element}
