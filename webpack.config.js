@@ -21,15 +21,18 @@ module.exports = {
         path: path.resolve(__dirname, 'dist')
     },
     devServer: {
-        port: 8000,
-        contentBase: "./dist"
+        port: 9000,
+        contentBase: "./dist",
+        proxy: {
+            '/api': 'http://127.0.0.1:8080'
+        }
     },
     plugins: [
-        //Generate index.html in /dist => https://github.com/ampedandwired/html-webpack-plugin
         new HtmlWebpackPlugin({
-          filename: 'index.html', //Name of file in ./dist/
-          template: './src/index.html', //Name of template in ./src
-          hash: true,
+            title: 'TODO',
+            filename: 'index.html',
+            template: './src/index.html',
+            hash: true
         })
-      ],
+      ]
 };

@@ -2,8 +2,116 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>TODO</title>
+    <title><%= htmlWebpackPlugin.options.title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body, ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        .header {
+            background-color: #0074D9;
+            padding: 30px 40px;
+            color: white;
+            text-align: center;
+        }
+
+        .header:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .header h2 {
+            margin: 5px;
+        }
+
+        .header input {
+            border: none;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        p.loading {
+            text-align: center;
+        }
+
+        li:nth-child(odd) {
+            background: #f9f9f9;
+        }
+
+        li {
+            cursor: pointer;
+            position: relative;
+            list-style-type: none;
+            background: #eee;
+            font-size: 18px;
+            transition: 0.2s;
+            user-select: none;
+        }
+
+        li.loading {
+            background: #fefefe;
+            color: #dfdfdf;
+            font-style: italic;
+        }
+
+        li.loading span.icon, li.loading span.destroy{
+            display: none;
+        }
+
+        li label {
+            cursor: pointer;
+        }
+
+        li div.item {
+            padding: 12px;
+            margin-left: 40px;
+        }
+
+        li span.icon {
+            content: '';
+            position: absolute;
+            border: solid #888;
+            top: 12px;
+            left: 16px;
+            height: 15px;
+            width: 15px;
+        }
+
+        li.checked {
+            background: #888;
+            color: #fff;
+            text-decoration: line-through;
+        }
+
+        li.checked span.icon {
+            border-color: #fff;
+            border-style: solid;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            left: 20px;
+            width: 7px;
+        }
+
+        li span.destroy {
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: 12px 16px 12px 16px;
+        }
+
+        li span.destroy:hover {
+            background-color: #FF4136;
+        }
+
+    </style>
 </head>
 <body>
     <div id="root"></div>

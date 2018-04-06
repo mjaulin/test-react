@@ -2,6 +2,7 @@ import * as React from 'react';
 import TodoTextInput from './TodoTextInput';
 
 interface HeaderProps {
+    isLoading: boolean;
     addTodo: (text: string) => any;
 }
 
@@ -16,8 +17,9 @@ class Header extends React.Component<HeaderProps> {
     render() {
         return (
             <header className="header">
-                <h1>Todos</h1>
+                <h2>My To Do List</h2>
                 <TodoTextInput
+                    isLoading={this.props.isLoading}
                     newTodo
                     onSave={this.handleSave.bind(this)}
                     placeholder="What needs to be done?" />

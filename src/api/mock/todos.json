@@ -1,12 +1,15 @@
 [{
   "id": 0,
-  "label": "Example todo 1"
+  "label": "Example todo 1",
+  "completed": false
 },
 {
-  "id": 3,
-  "label": "Example todo 2"
+  "id": 1,
+  "label": "Example todo 2",
+  "completed": true
 },
 {
   "id": 2,
-  "label": "Example todo 3"
+  "label": "Example todo 3",
+  "completed": false
 }]

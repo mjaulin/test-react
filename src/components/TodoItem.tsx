@@ -3,7 +3,6 @@ import * as classNames from 'classnames';
 
 import { Todo } from '../models';
 import TodoTextInput from './TodoTextInput';
-import {Dispatch} from "redux";
 
 interface TodoItemProps {
     todo: Todo;
@@ -24,8 +23,12 @@ class TodoItem extends React.Component<TodoItemProps, TodoItemState> {
         };
     }
 
-    handleDoubleClick() {
+    handleEdit() {
         this.setState({ editing: true });
+    }
+
+    handleComplete(todo) {
+        this.props.completeTodo(todo, !todo.completed)
     }
 
     handleSave(todo: Todo, text: string) {
@@ -40,25 +43,40 @@ class TodoItem extends React.Component<TodoItemProps, TodoItemState> {
     render() {
 
         let element;
-        if (this.state.editing) {
+        if (this.props.todo.isLoading) {
             element = (
-                <TodoTextInput text={this.props.todo.label}
-                    editing={this.state.editing}
-                    onSave={(text) => this.handleSave(this.props.todo, text)}/>
+                <div>
+                    <div className="item">
+                        <label>{this.props.todo.label}</label>
+                    </div>
+                </div>
+            );
+        } else if (this.state.editing) {
+            element = (
+                <div>
+                    <div className="item">
+                        <TodoTextInput text={this.props.todo.label}
+                                       editing={this.state.editing}
+                                       onSave={(text) => this.handleSave(this.props.todo, text)}/>
+                    </div>
+                </div>
             );
         } else {
             element = (
                 <div>
-                    {this.props.todo.label}
-                    <span className="edit" />
-                    <button className="destroy" onClick={() => this.props.deleteTodo(this.props.todo)}>x</button>
+                    <span className="icon" onClick={() => this.handleComplete(this.props.todo)} />
+                    <div className="item" onClick={this.handleEdit.bind(this)}>
+                        <label>{this.props.todo.label}</label>
+                    </div>
+                    <span className="destroy" onClick={() => this.props.deleteTodo(this.props.todo)}>×</span>
                 </div>
             );
         }
 
         return (
             <li className={classNames({
-                completed: this.props.todo.completed,
+                loading: this.props.todo.isLoading,
+                checked: this.props.todo.completed,
                 editing: this.state.editing
             })}>
                 {element}

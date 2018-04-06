@@ -4,6 +4,7 @@ import TodoItem from './TodoItem';
 import { connect } from 'react-redux'
 
 interface MainSectionProps {
+    isLoading: boolean,
     todos: Todo[];
     editTodo: (todo:Todo, text: string) => void;
     deleteTodo: (todo:Todo) => void;
@@ -12,11 +13,14 @@ interface MainSectionProps {
 
 class MainSection extends React.Component<MainSectionProps> {
     render() {
+        if (this.props.isLoading) {
+            return <p className='loading'>Loading...</p>
+        }
         return (
             <section className="todo">
                 <ul>
                     {this.props.todos.map(todo =>
-                        <TodoItem 
+                        <TodoItem
                             key={todo.id}
                             todo={todo}
                             editTodo={this.props.editTodo}

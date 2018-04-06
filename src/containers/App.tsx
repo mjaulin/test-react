@@ -32,14 +32,11 @@ class App extends React.Component<AppProps> {
             return <span>Sorry it doesn't work !!!</span>;
         }
 
-        if (isLoading) {
-            return <span>Loading...</span>;
-        }
-
         return (
             <div className="todoapp">
-                <Header addTodo={(text: string) => addTodo(dispatch, text)} />
+                <Header isLoading={isLoading} addTodo={(text: string) => dispatch(addTodo(dispatch, text))} />
                 <MainSection
+                    isLoading={isLoading}
                     todos={todos}
                     editTodo={(t, s) => editTodo(dispatch, t, s)}
                     deleteTodo={(t) => deleteTodo(dispatch, t)}

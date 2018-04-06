@@ -1,12 +1,16 @@
 import { createAction } from 'redux-actions';
 import { Todo } from '../models';
-import {API} from "../api";
+import API from "../api";
 import {
+    FETCH_ADD_TODO,
     ADD_TODO,
+    FETCH_DELETE_TODO,
     DELETE_TODO,
+    FETCH_EDIT_TODO,
+    EDIT_TODO,
     FETCH_DATA_TODO,
     ITEM_LOADED_TODO,
-    ITEM_ERROR_TODO, EDIT_TODO
+    ITEM_ERROR_TODO
 } from '../constants';
 
 const fetchData = (dispatch) => {
@@ -17,11 +21,14 @@ const fetchData = (dispatch) => {
         .catch(() => dispatch(itemsHasError(true)))
 };
 
-const addTodo = (dispatch, text: string) => {
-    let newTodo = { label: text, completed: false };
-    API.create(newTodo)
-        .then((id: number) => dispatch(addTodoSuccess({ ...newTodo, id: id })));
-};
+const addTodo = createAction<Todo, Todo>(
+    FETCH_ADD_TODO,
+    (dispatch, text: string) => {
+        let newTodo = { label: text, completed: false };
+        API.create(newTodo)
+            .then((id: number) => dispatch(addTodoSuccess({ ...newTodo, id: id })));
+        return newTodo;
+    });
 
 const addTodoSuccess = createAction<Todo, Todo>(
     ADD_TODO,
@@ -36,7 +43,7 @@ const deleteTodoSuccess = createAction<number, number>(
 );
 
 const editTodo = (dispatch, todo, newLabel) => {
-    let updatedTodo = { ...todo, text: newLabel };
+    let updatedTodo = { ...todo, label: newLabel };
     API.update(updatedTodo).then(() => dispatch(editTodoSuccess(updatedTodo)))
 };
 

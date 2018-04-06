@@ -2,7 +2,7 @@ import {Action, handleActions} from 'redux-actions';
 
 import {IState, Todo} from '../models';
 import {
-    ADD_TODO, EDIT_TODO, FETCH_DATA_TODO, ITEM_LOADED_TODO, ITEM_ERROR_TODO,
+    FETCH_ADD_TODO, ADD_TODO, EDIT_TODO, FETCH_DATA_TODO, ITEM_LOADED_TODO, ITEM_ERROR_TODO,
     DELETE_TODO
 } from '../constants';
 
@@ -13,6 +13,10 @@ const initialState: IState = {
 };
 
 export default handleActions<IState, Todo>({
+    [FETCH_ADD_TODO]: (state: IState, action: Action<Todo>): IState => {
+        return { ...state, todos: [{ ...action.payload, isLoading: true }, ...state.todos] }
+    },
+
     [ADD_TODO]: (state: IState, action: Action<Todo>): IState => {
         return { ...state,  todos: [action.payload, ...state.todos] }
     },
