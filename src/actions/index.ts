@@ -7,6 +7,7 @@ import {
     DELETE_TODO,
     FETCH_EDIT_TODO,
     EDIT_TODO,
+    FETCH_COMPLETE_TODO,
     FETCH_DATA_TODO,
     ITEM_LOADED_TODO,
     ERROR_TODO
@@ -21,11 +22,11 @@ const fetchData = (dispatch) => {
         .catch((e) => fetchError(e));
 };
 
-const addTodo =(dispatch, text: string) => {
+const addTodo = (dispatch, text: string) => {
     let newTodo = { label: text, completed: false };
     API.create(newTodo)
-        .then((id: string) => dispatch(addTodoSuccess({ ...newTodo, id: id })))
-        .catch((e) => fetchError({...e, payload: newTodo}));
+        .then((payload: Todo) => dispatch(addTodoSuccess(payload)))
+        .catch((e) => dispatch(fetchError(e, newTodo)));
     return newTodo;
 };
 
@@ -38,7 +39,7 @@ const deleteTodo = createAction<Todo, Dispatch<{}>, Todo>(
     FETCH_DELETE_TODO,
     (dispatch, todo) => {
         API.delete(todo).then(() => dispatch(deleteTodoSuccess(todo.id)));
-        return todo
+        return { ...todo, isLoading: true };
     }
 );
 
@@ -47,23 +48,26 @@ const deleteTodoSuccess = createAction<number, number>(
     (id) => id
 );
 
-const editTodo = (dispatch, todo, newLabel) => {
-    update(dispatch, { ...todo, label: newLabel });
+const editTodo = createAction<Todo, Dispatch<{}>, Todo>(
+    FETCH_EDIT_TODO,
+    (dispatch, todo, newLabel) => update(dispatch, todo, { ...todo, label: newLabel })
+);
+
+const completeTodo = createAction<Todo, Dispatch<{}>, Todo, boolean>(
+    FETCH_COMPLETE_TODO,
+    (dispatch, todo, completed) => update(dispatch, todo, { ...todo, completed: completed })
+);
+
+const update = function(dispatch: Dispatch<{}>, todo: Todo, updatedTodo: Todo) : Todo {
+    API.update(updatedTodo)
+        .then(() => dispatch(editTodoSuccess(updatedTodo)))
+        .catch((e) => dispatch(fetchError(e, todo)));
+    return { ...updatedTodo };
 };
 
-const completeTodo = (dispatch, todo, completed) => {
-    update(dispatch, { ...todo, completed: completed });
-};
-
-const update = function(dispatch: Dispatch<{}>, payload: Todo) {
-    API.update(payload)
-        .then(() => dispatch(editTodoSuccess(payload)))
-        .catch((e) => fetchError({...e, payload: payload}));
-};
-
-const editTodoSuccess = createAction<Todo, Todo, string>(
+const editTodoSuccess = createAction<Todo, Todo>(
     EDIT_TODO,
-    (todo) => todo
+    (todo: Todo) => todo
 );
 
 const fetchDataSuccess = createAction<Todo[], Todo[]>(
@@ -76,9 +80,9 @@ const itemsLoaded = createAction<boolean, boolean>(
     (isLoading: boolean) => !isLoading
 );
 
-const fetchError = createAction<ErrorTodo, ErrorTodo>(
+const fetchError = createAction<ErrorTodo, ErrorTodo, Todo>(
     ERROR_TODO,
-    (error) => error
+    (error: ErrorTodo, todo: Todo) => ({ ...error, payload: todo })
 );
 
 export {
@@ -86,5 +90,6 @@ export {
     addTodo,
     deleteTodo,
     editTodo,
-    completeTodo
+    completeTodo,
+    fetchError
 }

@@ -5,18 +5,21 @@ export type Todo = {
     isLoading?: boolean;
 };
 
+export type IState = {
+    todos : Todo[],
+    isLoading: boolean
+};
+
+export type IErrorTodo = {
+    errors?: ErrorTodo[]
+};
+
 export enum ErrorType {
     LOADED,
     CREATE,
     UPDATE,
     DELETE
 }
-
-export type IState = {
-    todos : Todo[],
-    isLoading: boolean,
-    error?: ErrorTodo
-};
 
 export class ErrorTodo extends Error {
 

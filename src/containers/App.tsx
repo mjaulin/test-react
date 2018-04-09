@@ -1,9 +1,10 @@
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import * as React from 'react';
-import { Todo } from '../models';
+import { Todo, ErrorTodo } from '../models';
 import Header from '../components/Header';
 import MainSection from '../components/MainSection';
+import Errors from '../components/Errors';
 import {
     fetchData,
     addTodo,
@@ -14,7 +15,7 @@ import {
 
 interface AppProps {
     todos: Todo[];
-    hasError: false;
+    errors: ErrorTodo[];
     isLoading: true;
     dispatch: Dispatch<{}>;
 }
@@ -26,11 +27,7 @@ class App extends React.Component<AppProps> {
     }
 
     render() {
-        const { todos, hasError, isLoading, dispatch } = this.props;
-
-        if (hasError) {
-            return <span>Sorry it doesn't work !!!</span>;
-        }
+        const { todos, errors, isLoading, dispatch } = this.props;
 
         return (
             <div className="todoapp">
@@ -38,9 +35,10 @@ class App extends React.Component<AppProps> {
                 <MainSection
                     isLoading={isLoading}
                     todos={todos}
-                    editTodo={(t, s) => editTodo(dispatch, t, s)}
-                    deleteTodo={(t) => deleteTodo(dispatch, t)}
-                    completeTodo={(t, c) => completeTodo(dispatch, t, c)} />
+                    editTodo={(t, s) => dispatch(editTodo(dispatch, t, s))}
+                    deleteTodo={(t) => dispatch(deleteTodo(dispatch, t))}
+                    completeTodo={(t, c) => dispatch(completeTodo(dispatch, t, c))} />
+                <Errors errors={errors} />
             </div>
         );
     }
@@ -48,7 +46,7 @@ class App extends React.Component<AppProps> {
 
 const mapStateToProps = state => ({
     todos: state.todos.todos,
-    hasError: state.todos.hasError,
+    errors: state.errors.errors,
     isLoading: state.todos.isLoading
 });
 

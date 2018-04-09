@@ -31,8 +31,7 @@ export class API {
                 }
                 return response;
             })
-            .then(response => response.headers)
-            .then(headers => headers["location"])
+            .then(response => response.json())
     }
 
     public static update(payload: Todo): Promise<Todo> {

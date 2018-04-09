@@ -2,7 +2,7 @@ import {Action, handleActions} from 'redux-actions';
 
 import {ErrorTodo, IState, Todo} from '../models';
 import {
-    ADD_TODO, FETCH_EDIT_TODO, EDIT_TODO, FETCH_DELETE_TODO, DELETE_TODO, FETCH_DATA_TODO, ITEM_LOADED_TODO, ERROR_TODO
+    ADD_TODO, FETCH_EDIT_TODO, EDIT_TODO, FETCH_DELETE_TODO, DELETE_TODO, FETCH_DATA_TODO, ITEM_LOADED_TODO, ERROR_TODO, FETCH_COMPLETE_TODO
 } from '../constants';
 
 const initialState: IState = {
@@ -27,6 +27,10 @@ export default handleActions<IState, Todo>({
         return { ...state, todos: state.todos.map(todo => todo.id == action.payload.id ? { ...action.payload, isLoading: true } : todo)}
     },
 
+    [FETCH_COMPLETE_TODO]: (state: IState, action: Action<Todo>): IState => {
+        return { ...state, todos: state.todos.map(todo => todo.id == action.payload.id ? { ...action.payload, isLoading: true } : todo)}
+    },
+
     [EDIT_TODO]: (state: IState, action: Action<Todo>): IState => {
         return { ...state, todos: state.todos.map(todo => todo.id === action.payload.id ? action.payload : todo) };
     },
@@ -36,10 +40,10 @@ export default handleActions<IState, Todo>({
     },
 
     [ITEM_LOADED_TODO]: (state: IState, action: Action<boolean>): IState => {
-        return { ...state, isLoading: action.payload }
+        return { ...state, isLoading: action.payload };
     },
 
     [ERROR_TODO]: (state: IState, action: Action<ErrorTodo>): IState => {
-        return { ...state, error: action.payload, todos: state.todos.filter(todo => !action.payload.type.DELETE || todo.id !== action.payload.id) }
+        return { ...state, todos: state.todos.filter(todo => !action.payload.type.DELETE || todo.id !== action.payload.id) };
     }
 }, initialState);

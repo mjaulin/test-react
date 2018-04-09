@@ -56,14 +56,16 @@
             user-select: none;
         }
 
-        li.loading {
+        li.loading, li.loading.checked {
             background: #fefefe;
             color: #dfdfdf;
             font-style: italic;
         }
 
-        li.loading span.icon, li.loading span.destroy{
-            display: none;
+        li.checked {
+            background: #888;
+            color: #fff;
+            text-decoration: line-through;
         }
 
         li label {
@@ -83,12 +85,6 @@
             left: 16px;
             height: 15px;
             width: 15px;
-        }
-
-        li.checked {
-            background: #888;
-            color: #fff;
-            text-decoration: line-through;
         }
 
         li.checked span.icon {
