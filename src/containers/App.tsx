@@ -6,12 +6,10 @@ import Header from '../components/Header';
 import MainSection from '../components/MainSection';
 import Errors from '../components/Errors';
 import {
-    fetchData,
-    addTodo,
-    editTodo,
-    deleteTodo,
-    completeTodo
-} from '../actions';
+    fetchLoadData,
+    fetchAdd,
+    fetchDelete, fetchUpdate
+} from '../middleware';
 
 interface AppProps {
     todos: Todo[];
@@ -23,7 +21,7 @@ interface AppProps {
 class App extends React.Component<AppProps> {
 
     componentDidMount() {
-        fetchData(this.props.dispatch);
+        this.props.dispatch(fetchLoadData());
     }
 
     render() {
@@ -31,13 +29,13 @@ class App extends React.Component<AppProps> {
 
         return (
             <div className="todoapp">
-                <Header isLoading={isLoading} addTodo={(text: string) => addTodo(dispatch, text)} />
+                <Header isLoading={isLoading} addTodo={(text: string) => dispatch(fetchAdd(text))} />
                 <MainSection
                     isLoading={isLoading}
                     todos={todos}
-                    editTodo={(t, s) => dispatch(editTodo(dispatch, t, s))}
-                    deleteTodo={(t) => dispatch(deleteTodo(dispatch, t))}
-                    completeTodo={(t, c) => dispatch(completeTodo(dispatch, t, c))} />
+                    editTodo={(t, s) => dispatch(fetchUpdate(t, { ...t, label: s }))}
+                    deleteTodo={(t) => dispatch(fetchDelete(t))}
+                    completeTodo={(t, c) => dispatch(fetchUpdate(t, {...t, completed: c }))} />
                 <Errors errors={errors} />
             </div>
         );
