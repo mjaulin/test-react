@@ -1,9 +1,11 @@
 import * as React from 'react';
 import TodoTextInput from './TodoTextInput';
+import {ErrorTodo, ErrorType} from "../models";
 
 interface HeaderProps {
     isLoading: boolean;
     addTodo: (text: string) => any;
+    error?: ErrorTodo
 }
 
 class Header extends React.Component<HeaderProps> {
@@ -19,7 +21,7 @@ class Header extends React.Component<HeaderProps> {
             <header className="header">
                 <h2>My To Do List</h2>
                 <TodoTextInput
-                    isLoading={this.props.isLoading}
+                    disabled={this.props.isLoading || (this.props.error && this.props.error.type === ErrorType.LOADED)}
                     newTodo
                     onSave={this.handleSave.bind(this)}
                     placeholder="What needs to be done?" />

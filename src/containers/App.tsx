@@ -34,7 +34,7 @@ class App extends React.Component<AppProps> {
 
         return (
             <div className="todoapp">
-                <Header isLoading={isLoading} addTodo={(text: string) => dispatch(addTodo(dispatch, text))} />
+                <Header isLoading={isLoading} addTodo={(text: string) => addTodo(dispatch, text)} />
                 <MainSection
                     isLoading={isLoading}
                     todos={todos}

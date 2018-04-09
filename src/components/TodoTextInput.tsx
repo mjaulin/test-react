@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 
 interface TodoTextInputProps {
-    isLoading?: boolean;
+    disabled?: boolean;
     onSave: (text: string) => void;
     text?: string;
     placeholder?: string;
@@ -43,7 +43,7 @@ class TodoTextInput extends React.Component<TodoTextInputProps, TodoTextInputSta
     }
 
     render() {
-        if (this.props.isLoading) {
+        if (this.props.disabled) {
             return <input className='new-todo' type='text' placeholder={this.props.placeholder} disabled/>
         }
         return (
