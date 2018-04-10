@@ -17,7 +17,7 @@ export class API {
             .then(response => response.json())
     }
 
-    public static create(payload: Todo): Promise<string> {
+    public static create(payload: Todo): Promise<Todo> {
         return fetch(URL,
             {
                 method: 'POST',
