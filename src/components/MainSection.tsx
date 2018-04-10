@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {ErrorType, ErrorTodo, Todo} from '../models';
+import { Todo} from '../models';
 import TodoItem from './TodoItem';
 import { connect } from 'react-redux'
 
@@ -9,13 +9,13 @@ interface MainSectionProps {
     editTodo: (todo:Todo, text: string) => void;
     deleteTodo: (todo:Todo) => void;
     completeTodo: (todo:Todo, completed: boolean) => void;
-    error?: ErrorTodo,
+    hasError: boolean,
 }
 
 class MainSection extends React.Component<MainSectionProps> {
     render() {
-        if (this.props.error && this.props.error.type === ErrorType.LOADED) {
-            return <p className='loading'>Sorry, it doesn't work...</p>
+        if (this.props.hasError) {
+            return <div/>
         }
         if (this.props.isLoading) {
             return <p className='loading'>Loading...</p>

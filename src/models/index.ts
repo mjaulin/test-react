@@ -7,7 +7,8 @@ export type Todo = {
 
 export type IState = {
     todos : Todo[],
-    isLoading: boolean
+    isLoading: boolean,
+    hasError: boolean
 };
 
 export type IErrorTodo = {
@@ -21,20 +22,9 @@ export enum ErrorType {
     DELETE
 }
 
-export class ErrorTodo extends Error {
-
-    id: string
+export type ErrorTodo = {
+    id: string;
     payload: Todo;
     type: ErrorType;
-
-    constructor(id, type, message, payload?) {
-        super(message);
-        if(Error.captureStackTrace) {
-            Error.captureStackTrace(this, ErrorTodo);
-        }
-        this.id = id;
-        this.payload = payload;
-        this.type = type;
-    }
-
+    message: string;
 }

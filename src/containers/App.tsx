@@ -18,7 +18,8 @@ import {
 interface AppProps {
     todos: Todo[];
     errors: ErrorTodo[];
-    isLoading: true;
+    isLoading: boolean;
+    hasError: boolean;
     dispatch: Dispatch<{}>;
 }
 
@@ -29,7 +30,7 @@ class App extends React.Component<AppProps> {
     }
 
     render() {
-        const { todos, errors, isLoading, dispatch } = this.props;
+        const { todos, errors, isLoading, hasError, dispatch } = this.props;
 
         return (
             <div className="todoapp">
@@ -37,6 +38,7 @@ class App extends React.Component<AppProps> {
                 <MainSection
                     isLoading={isLoading}
                     todos={todos}
+                    hasError={hasError}
                     editTodo={(t, s) => dispatch(fetchUpdate(t, { ...t, label: s }))}
                     deleteTodo={(t) => dispatch(fetchDelete(t))}
                     completeTodo={(t, c) => dispatch(fetchUpdate(t, {...t, completed: c }))} />
@@ -48,6 +50,7 @@ class App extends React.Component<AppProps> {
 
 const mapStateToProps = state => ({
     todos: state.todos.todos,
+    hasError: state.todos.hasError,
     errors: state.errors.errors,
     isLoading: state.todos.isLoading
 });

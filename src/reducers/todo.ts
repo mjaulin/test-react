@@ -1,18 +1,19 @@
 import {Action, handleActions} from 'redux-actions';
 
-import {ErrorTodo, IState, Todo} from '../models';
+import {ErrorTodo, ErrorType, IState, Todo} from '../models';
 import {
     FETCH_DATA_TODO, ADD_TODO, UPDATE_TODO, DELETE_TODO, ITEMS_LOADING_TODO, ITEM_LOADING_TODO, ERROR_TODO
 } from '../constants';
 
 const initialState: IState = {
     todos: [],
-    isLoading: true
+    isLoading: true,
+    hasError: false
 };
 
 export default handleActions<IState, Todo>({
     [FETCH_DATA_TODO]: (state: IState, action: Action<Todo[]>): IState => {
-        return { ...state, todos: action.payload };
+        return { ...state, todos: action.payload, hasError: false };
     },
 
     [ADD_TODO]: (state: IState, action: Action<Todo>): IState => {
@@ -36,6 +37,8 @@ export default handleActions<IState, Todo>({
     },
 
     [ERROR_TODO]: (state: IState, action: Action<ErrorTodo>): IState => {
-        return { ...state, todos: state.todos.map(todo => todo.id === action.payload.payload.id ? action.payload.payload : todo) };
+        return { ...state,
+            todos: state.todos.map(todo => todo.id === action.payload.payload.id ? action.payload.payload : todo),
+            hasError: action.payload.type === ErrorType.LOADED };
     }
 }, initialState);

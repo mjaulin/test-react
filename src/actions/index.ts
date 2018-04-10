@@ -42,9 +42,9 @@ const fetchItemLoading = createAction<Todo, Todo, boolean>(
     (todo: Todo, isLoading: boolean) => ({ ...todo, isLoading: isLoading })
 );
 
-const fetchError = createAction<ErrorTodo, ErrorTodo, Todo>(
+const fetchError = createAction<ErrorTodo, ErrorTodo>(
     ERROR_TODO,
-    (error: ErrorTodo, todo: Todo) => ({ ...error, payload: todo })
+    (error: ErrorTodo) => error
 );
 
 const fetchDeleteError = createAction<ErrorTodo, ErrorTodo>(
