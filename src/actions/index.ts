@@ -4,12 +4,12 @@ import { Todo, ErrorTodo } from '../models';
 import {
     FETCH_DATA_TODO,
     ADD_TODO,
-    FETCH_UPDATE_TODO,
     UPDATE_TODO,
-    FETCH_DELETE_TODO,
     DELETE_TODO,
-    ITEM_LOADED_TODO,
-    ERROR_TODO
+    ITEMS_LOADING_TODO,
+    ITEM_LOADING_TODO,
+    ERROR_TODO,
+    DELETE_ERROR_TODO
 } from '../constants';
 
 const fetchDataSuccess = createAction<Todo[], Todo[]>(
@@ -17,15 +17,9 @@ const fetchDataSuccess = createAction<Todo[], Todo[]>(
     (items: Todo[]) => items
 );
 
-
 const addSuccess = createAction<Todo, Todo>(
     ADD_TODO,
     (todo: Todo) => todo
-);
-
-const fetchUpdateSuccess = createAction<Todo, Todo>(
-    FETCH_UPDATE_TODO,
-    (todo) => todo
 );
 
 const updateSuccess = createAction<Todo, Todo>(
@@ -33,19 +27,19 @@ const updateSuccess = createAction<Todo, Todo>(
     (todo) => todo
 );
 
-const fetchDeleteSuccess = createAction<Todo, Todo>(
-    FETCH_DELETE_TODO,
-    (todo: Todo) =>  todo
-);
-
 const deleteSuccess = createAction<number, number>(
     DELETE_TODO,
     (id) => id
 );
 
-const fetchLoading = createAction<boolean, boolean>(
-    ITEM_LOADED_TODO,
-    (isLoading: boolean) => !isLoading
+const fetchItemsLoading = createAction<boolean, boolean>(
+    ITEMS_LOADING_TODO,
+    (isLoading: boolean) => isLoading
+);
+
+const fetchItemLoading = createAction<Todo, Todo, boolean>(
+    ITEM_LOADING_TODO,
+    (todo: Todo, isLoading: boolean) => ({ ...todo, isLoading: isLoading })
 );
 
 const fetchError = createAction<ErrorTodo, ErrorTodo, Todo>(
@@ -53,13 +47,18 @@ const fetchError = createAction<ErrorTodo, ErrorTodo, Todo>(
     (error: ErrorTodo, todo: Todo) => ({ ...error, payload: todo })
 );
 
+const fetchDeleteError = createAction<ErrorTodo, ErrorTodo>(
+    DELETE_ERROR_TODO,
+    (error: ErrorTodo) => error
+);
+
 export {
     fetchDataSuccess,
     addSuccess,
-    fetchUpdateSuccess,
     updateSuccess,
-    fetchDeleteSuccess,
     deleteSuccess,
-    fetchLoading,
-    fetchError
+    fetchItemsLoading,
+    fetchItemLoading,
+    fetchError,
+    fetchDeleteError
 }

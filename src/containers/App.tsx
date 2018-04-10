@@ -8,8 +8,12 @@ import Errors from '../components/Errors';
 import {
     fetchLoadData,
     fetchAdd,
-    fetchDelete, fetchUpdate
+    fetchDelete, 
+    fetchUpdate
 } from '../middleware';
+import {
+    fetchDeleteError
+} from '../actions';
 
 interface AppProps {
     todos: Todo[];
@@ -36,7 +40,7 @@ class App extends React.Component<AppProps> {
                     editTodo={(t, s) => dispatch(fetchUpdate(t, { ...t, label: s }))}
                     deleteTodo={(t) => dispatch(fetchDelete(t))}
                     completeTodo={(t, c) => dispatch(fetchUpdate(t, {...t, completed: c }))} />
-                <Errors errors={errors} />
+                <Errors errors={errors} deleteError={(e) => dispatch(fetchDeleteError(e))} />
             </div>
         );
     }

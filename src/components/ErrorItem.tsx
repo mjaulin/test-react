@@ -2,16 +2,17 @@ import * as React from 'react';
 import { ErrorTodo } from "../models";
 
 interface ErrorItemProps {
-    error: ErrorTodo
+    error: ErrorTodo;
+    deleteError: (error: ErrorTodo) => void;
 }
 
 class ErrorItem extends React.Component<ErrorItemProps> {
-
+    
     render() {
         return (
-            <div className="alert">
-                <span className="closebtn">×</span>  
-                <strong>Error</strong> {this.props.error.message}
+            <div>
+                <span onClick={() => this.props.deleteError(this.props.error)}>×</span>  
+                {this.props.error.message}
             </div>
         );
     }

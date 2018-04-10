@@ -23,14 +23,16 @@ export enum ErrorType {
 
 export class ErrorTodo extends Error {
 
+    id: string
     payload: Todo;
     type: ErrorType;
 
-    constructor(type, message, payload?) {
+    constructor(id, type, message, payload?) {
         super(message);
         if(Error.captureStackTrace) {
             Error.captureStackTrace(this, ErrorTodo);
         }
+        this.id = id;
         this.payload = payload;
         this.type = type;
     }

@@ -1,4 +1,5 @@
 import { Todo, ErrorTodo, ErrorType } from '../models';
+import { v4 as uuid } from 'uuid';
 
 // Real API
 const URL = 'http://localhost:8080/';
@@ -9,7 +10,7 @@ export class API {
         return fetch(URL)
             .then(response => {
                 if (!response.ok) {
-                    throw new ErrorTodo(ErrorType.LOADED, "Error while get all tasks");
+                    throw new ErrorTodo(uuid(), ErrorType.LOADED, "Error while get all tasks");
                 }
                 return response;
             })
@@ -27,25 +28,25 @@ export class API {
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new ErrorTodo(ErrorType.CREATE,"Error while create new task " + payload.label, payload);
+                    throw new ErrorTodo(uuid(), ErrorType.CREATE,"Error while create new task " + payload.label, payload);
                 }
                 return response;
             })
             .then(response => response.json())
     }
 
-    public static update(payload: Todo): Promise<Todo> {
-        return fetch(URL + payload.id,
+    public static update(oldTodo: Todo, newTodo: Todo): Promise<Todo> {
+        return fetch(URL + newTodo.id,
             {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(newTodo)
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new ErrorTodo(ErrorType.UPDATE, "Error while update task " + payload.label, payload);
+                    throw new ErrorTodo(uuid(), ErrorType.UPDATE, "Error while update task " + newTodo.label, oldTodo);
                 }
                 return response;
             })
@@ -58,7 +59,7 @@ export class API {
                 method: 'DELETE'
             }).then(response => {
             if (!response.ok) {
-                throw new ErrorTodo(ErrorType.DELETE, "Error while delete task " + payload.label, payload);
+                throw new ErrorTodo(uuid(), ErrorType.DELETE, "Error while delete task " + payload.label, payload);
             }
         })
     }

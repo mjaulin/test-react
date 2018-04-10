@@ -3,19 +3,18 @@ import API from "../api";
 import {
     fetchDataSuccess,
     addSuccess,
-    fetchUpdateSuccess,
     updateSuccess,
-    fetchDeleteSuccess,
     deleteSuccess,
-    fetchLoading,
+    fetchItemsLoading,
+    fetchItemLoading,
     fetchError
 } from "../actions";
 
 const fetchLoadData = () => (dispatch) => {
-    dispatch(fetchLoading(false));
+    dispatch(fetchItemsLoading(true));
     API.getAll()
         .then(items => dispatch(fetchDataSuccess(items)))
-        .then(() => dispatch(fetchLoading(true)))
+        .then(() => dispatch(fetchItemsLoading(false)))
         .catch((e) => fetchError(e));
 };
 
@@ -27,15 +26,17 @@ const fetchAdd = (text: string) => (dispatch) => {
 };
 
 const fetchUpdate = (todo: Todo, updatedTodo: Todo) => (dispatch) => {
+    dispatch(fetchItemLoading(updatedTodo, true));
     API.update(updatedTodo)
         .then(() => dispatch(updateSuccess(updatedTodo)))
         .catch((e) => dispatch(fetchError(e, todo)));
-    dispatch(fetchUpdateSuccess(updatedTodo));
 };
 
 const fetchDelete = (todo: Todo) => (dispatch) => {
-    API.delete(todo).then(() => dispatch(deleteSuccess(todo.id)));
-    dispatch(fetchDeleteSuccess(todo))
+    dispatch(fetchItemLoading(todo, true))
+    API.delete(todo)
+        .then(() => dispatch(deleteSuccess(todo.id)))
+        .catch(e => dispatch(fetchError(e, todo)));
 };
 
 export {
