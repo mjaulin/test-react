@@ -1,3 +1,3 @@
-import { API } from './mock';
-// import { API } from './api';
+// import { API } from './mock';
+import { API } from './api';
 export default API;

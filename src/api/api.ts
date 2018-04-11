@@ -1,8 +1,8 @@
-import { Todo, ErrorTodo, ErrorType } from '../models';
+import { Todo, ErrorType } from '../models';
 import { v4 as uuid } from 'uuid';
 
 // Real API
-const URL = 'http://localhost:8080/';
+const URL = process.env.API_URL;
 
 export class API {
 
