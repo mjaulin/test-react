@@ -1,4 +1,4 @@
-# TODO List : React - Redux - Typescript - Webpack
+# TODO List Frontend : React - Redux - Typescript - Webpack
 
 ## Requirement
 
