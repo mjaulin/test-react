@@ -8,7 +8,7 @@ type IResponseMock = {
     ok: boolean;
 }
 
-export class API {
+export class APIMOCK {
 
     public static getAll(): Promise<Todo[]> {
         return new Promise<IResponseMock>(resolve => setTimeout(() => resolve({ ok: true }), 1000))

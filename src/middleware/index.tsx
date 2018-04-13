@@ -1,5 +1,5 @@
 import { Todo } from '../models';
-import API from "../api";
+import { API, APIMOCK } from "../api";
 import {
     fetchDataSuccess,
     addSuccess,
@@ -10,9 +10,11 @@ import {
     fetchError
 } from "../actions";
 
+let api = process.env.MOCK ? APIMOCK : API;
+
 const fetchLoadData = () => (dispatch) => {
     dispatch(fetchItemsLoading(true));
-    API.getAll()
+    api.getAll()
         .then(items => dispatch(fetchDataSuccess(items)))
         .then(() => dispatch(fetchItemsLoading(false)))
         .catch((e) => dispatch(fetchError(e)));
@@ -20,21 +22,21 @@ const fetchLoadData = () => (dispatch) => {
 
 const fetchAdd = (text: string) => (dispatch) => {
     let newTodo = { label: text, completed: false };
-    API.create(newTodo)
+    api.create(newTodo)
         .then((payload: Todo) => dispatch(addSuccess(payload)))
         .catch((e) => dispatch(fetchError({ ...e, payload: newTodo })));
 };
 
 const fetchUpdate = (todo: Todo, updatedTodo: Todo) => (dispatch) => {
     dispatch(fetchItemLoading(updatedTodo, true));
-    API.update(updatedTodo)
+    api.update(updatedTodo)
         .then(() => dispatch(updateSuccess(updatedTodo)))
         .catch((e) => dispatch(fetchError({ ...e, payload: todo })));
 };
 
 const fetchDelete = (todo: Todo) => (dispatch) => {
     dispatch(fetchItemLoading(todo, true));
-    API.delete(todo)
+    api.delete(todo)
         .then(() => dispatch(deleteSuccess(todo.id)))
         .catch((e) => {
             dispatch(fetchError({ ...e, payload: todo }))

@@ -1,3 +1,3 @@
-// import { API } from './mock';
+import { APIMOCK } from './mock';
 import { API } from './api';
-export default API;
+export { API, APIMOCK };
