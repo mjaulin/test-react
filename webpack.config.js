@@ -24,9 +24,6 @@ module.exports = {
     devServer: {
         port: 9000,
         contentBase: "./dist",
-        proxy: {
-            '/api': 'http://127.0.0.1:8080'
-        }
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -36,7 +33,7 @@ module.exports = {
             hash: true
         }),
         new webpack.EnvironmentPlugin({
-            'API_URL': 'http://localhost:8080'
+            'API_URL': 'http://localhost:8080/'
         })
       ]
 };
